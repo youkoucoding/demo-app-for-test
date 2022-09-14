@@ -8,11 +8,9 @@ let getData = async () => {
   return response;
 };
 
-/* GET users listing. */
+/* GET cat news. */
 router.get("/", async function (req, res, next) {
   let result = await getData();
-  // res.send(result.data.fact);
-
   res.render("index", { title: result.data.fact });
 });
 
