@@ -4,8 +4,8 @@ import { cosmosDBContainers } from '../utils/cosmosDB/cosmosClient.js';
 export default async function httpTrigger(context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
   const { databaseID, containerID } = req.body;
-  cosmosDbDatabaseAccountGet().catch(console.error);
-  cosmosDBContainers(databaseID, containerID).catch(console.error);
+  // cosmosDbDatabaseAccountGet().catch(console.error);
+  const ids = await cosmosDBContainers(databaseID, containerID);
 
   const name = req.query.name || (req.body && req.body.name);
   const responseMessage = name
@@ -14,6 +14,6 @@ export default async function httpTrigger(context, req) {
 
   context.res = {
     // status: 200, /* Defaults to 200 */
-    body: responseMessage,
+    body: ids,
   };
 }

@@ -11,16 +11,13 @@ export async function cosmosDBContainers(databaseID, containerID) {
   const dbContainer = client.database(databaseID).container(containerID);
 
   const queryIterator = dbContainer.items.query(query1);
-  let count = 0;
-  while (queryIterator.hasMoreResults() && count <= 100000) {
+
+  const ids = [];
+  while (queryIterator.hasMoreResults()) {
     const { resources: results } = await queryIterator.fetchNext();
     if (results !== undefined) {
-      console.log(
-        '🚀 ~ file: cosmosClient.js ~ line 18 ~ getCosmosDBContainers ~ results',
-        results
-      );
-      count = count + results.length;
+      ids.push(results);
     }
   }
-  console.log('🚀 ~ file: cosmosClient.js ~ line 19 ~ getCosmosDBContainers ~ count', count);
+  return ids;
 }
