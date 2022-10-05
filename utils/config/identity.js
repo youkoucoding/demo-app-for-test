@@ -1,3 +1,6 @@
-import { DefaultAzureCredential } from '@azure/identity';
+import { ManagedIdentityCredential } from '@azure/identity';
 
-export const credential = new DefaultAzureCredential();
+const clientId = process.env.AZURE_CLIENT_ID;
+console.log('🚀 ~ file: identity.js ~ line 4 ~ clientId', clientId);
+
+export const credential = new ManagedIdentityCredential(clientId);

@@ -5,7 +5,7 @@ const key = process.env.AZURE_DB_KEY;
 
 const client = new CosmosClient({ endpoint, key });
 
-const query1 = "Select * from c where c._partition = 'Customers'";
+const query1 = "Select * from c where c.id = '<items what you want test>'";
 
 export async function cosmosDBContainers(databaseID, containerID) {
   const dbContainer = client.database(databaseID).container(containerID);

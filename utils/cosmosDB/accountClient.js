@@ -1,10 +1,10 @@
 import { CosmosDBManagementClient } from '@azure/arm-cosmosdb';
-import { credential } from '../config/identity.js';
+import { credential } from '../config/identity';
 import {
   AZURE_SUBSCRIPTION_ID,
   AZURE_RESOURCE_GROUP,
   AZURE_COSMOSDB_ACCOUNT_NAME,
-} from '../config/config.js';
+} from '../config/config';
 
 /**
  * This sample demonstrates how to Retrieves the properties of an existing Azure Cosmos DB database account.
@@ -18,5 +18,4 @@ export async function cosmosDbDatabaseAccountGet() {
     AZURE_RESOURCE_GROUP,
     AZURE_COSMOSDB_ACCOUNT_NAME
   );
-  // console.log('🚀 ~ file: index.js ~ line 21 ~ cosmosDbDatabaseAccountGet ~ result', result);
 }
