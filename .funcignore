@@ -4,3 +4,4 @@
 local.settings.json
 test
 tsconfig.json
+node_modules/azure-functions-core-tools

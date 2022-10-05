@@ -15,10 +15,6 @@ export default async function httpTrigger(context, req) {
 
   const token = await credential.getToken();
 
-  const responseMessage = 'hey'
-    ? 'Hello, ' + 'Good morning' + '. This HTTP triggered function executed successfully.'
-    : 'This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.';
-
   context.res = {
     status: response.status /* Defaults to 200 */,
     body: { body, token },
