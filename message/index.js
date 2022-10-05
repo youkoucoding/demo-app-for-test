@@ -1,5 +1,5 @@
 export default async function httpTrigger(context, req) {
-  context.log('JavaScript HTTP trigger function processed a request.');
+  context.log('JavaScript HTTP trigger function processed a request.', context);
 
   const name = req.query.name || (req.body && req.body.name);
   const responseMessage = name
