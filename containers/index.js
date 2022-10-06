@@ -1,10 +1,11 @@
 import { CosmosClient } from '@azure/cosmos';
-import { credential } from '../config/identity';
+import { ManagedIdentityCredential } from '@azure/identity';
 
+const clientId = process.env.AZURE_CLIENT_ID;
 const endpoint = process.env.AZURE_DB_ENDPOINT;
-// const key = process.env.AZURE_DB_KEY;
 
-const client = new CosmosClient({ endpoint, credential });
+const key = process.env.AZURE_DB_KEY;
+
 // const client = new CosmosClient({ endpoint, key });
 
 const query1 = "Select * from c where c.id = '<what you want>'";
@@ -12,7 +13,22 @@ const query1 = "Select * from c where c.id = '<what you want>'";
 async function cosmosDBContainers(databaseID, containerID) {
   // const dbContainer = client.database(databaseID).container(containerID);
   // const { database } = await client.databases.createIfNotExists({ id: 'SmartCompany' });
-  const data = await client.databases.readAll().fetchAll();
+  try {
+    const credential = new ManagedIdentityCredential(clientId);
+  } catch (error) {
+    context.log.error('new ManagedIdentityCredential(clientId):', error);
+  }
+  try {
+    const client = new CosmosClient(endpoint, credential);
+  } catch (error) {
+    context.log.error('new CosmosClient(endpoint, credential): ', error);
+  }
+
+  try {
+    const data = await client.databases.readAll().fetchAll();
+  } catch (error) {
+    context.log.error(error);
+  }
 
   // const queryIterator = dbContainer.items.query(query1);
 
@@ -32,7 +48,11 @@ async function cosmosDBContainers(databaseID, containerID) {
 export default async function httpTrigger(context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
 
-  const data = await cosmosDBContainers();
+  try {
+    const data = await cosmosDBContainers();
+  } catch (error) {
+    context.log.error('const data = await cosmosDBContainers():', error);
+  }
 
   const name = req.query.name || (req.body && req.body.name);
   const responseMessage = name
