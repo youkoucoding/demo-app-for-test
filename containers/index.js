@@ -1,52 +1,37 @@
 import { CosmosClient } from '@azure/cosmos';
-import { ManagedIdentityCredential } from '@azure/identity';
+import { DefaultAzureCredential, ManagedIdentityCredential } from '@azure/identity';
 
 const clientId = process.env.AZURE_CLIENT_ID;
 const endpoint = process.env.AZURE_DB_ENDPOINT;
 
-const key = process.env.AZURE_DB_KEY;
+// const key = process.env.AZURE_DB_KEY;
 
 // const client = new CosmosClient({ endpoint, key });
+
+async function cosmosDBContainers(databaseID, containerID) {
+  const credential = new ManagedIdentityCredential(clientId);
+  // const credential = new DefaultAzureCredential();
+  const client = new CosmosClient({ endpoint, aadCredentials: credential });
+  const dbContainer = client.database(databaseID).container(containerID);
+
+  // const queryIterator = dbContainer.items.query(query1);
+
+  // const ids = [];
+  // while (queryIterator.hasMoreResults()) {
+  //   const { resources: results } = await queryIterator.fetchNext();
+  //   if (results !== undefined) {
+  //     ids.push(results);
+  //   }
+  // }
+
+  // return ids;
+  return dbContainer;
+}
 
 const query1 = "Select * from c where c.id = '<what you want>'";
 
 export default async function httpTrigger(context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
-
-  async function cosmosDBContainers(databaseID, containerID) {
-    // const dbContainer = client.database(databaseID).container(containerID);
-    // const { database } = await client.databases.createIfNotExists({ id: 'SmartCompany' });
-    try {
-      const credential = new ManagedIdentityCredential(clientId);
-    } catch (error) {
-      context.log.error('new ManagedIdentityCredential(clientId):', error);
-    }
-    try {
-      const client = new CosmosClient(endpoint, credential);
-    } catch (error) {
-      context.log.error('new CosmosClient(endpoint, credential): ', error);
-    }
-
-    try {
-      const data = await client.databases.readAll().fetchAll();
-    } catch (error) {
-      context.log.error(error);
-    }
-
-    // const queryIterator = dbContainer.items.query(query1);
-
-    // const ids = [];
-    // while (queryIterator.hasMoreResults()) {
-    //   const { resources: results } = await queryIterator.fetchNext();
-    //   if (results !== undefined) {
-    //     ids.push(results);
-    //   }
-    // }
-
-    // return ids;
-    // const data = client.database('SmartCompany').container('ServiceManagement').items.readAll();
-    return data;
-  }
 
   try {
     const data = await cosmosDBContainers();
@@ -61,6 +46,6 @@ export default async function httpTrigger(context, req) {
 
   context.res = {
     // status: 200, /* Defaults to 200 */
-    body: { responseMessage, data },
+    body: { responseMessage, res: data },
   };
 }
