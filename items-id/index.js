@@ -1,7 +1,7 @@
 import fetch from 'node-fetch';
 import { ManagedIdentityCredential, DefaultAzureCredential } from '@azure/identity';
 
-const clientId = process.env.AZURE_CLIENT_ID;
+const msi = process.env.AZURE_CLIENT_MID;
 const authorizedURL = process.env.AUTH_URL;
 const oauthScope = process.env.API_SCOPE;
 const scope = `${oauthScope}`;
@@ -9,8 +9,7 @@ const scope = `${oauthScope}`;
 export default async function httpTrigger(context, req) {
   context.log('JavaScript HTTP trigger function processed a request.');
 
-  // const credential = new ManagedIdentityCredential(clientId);
-  const credential = new DefaultAzureCredential();
+  const credential = new ManagedIdentityCredential(msi);
   context.log('🚀 ~ file: index.js ~ line 8 ~ credential', credential);
   const { token } = await credential.getToken(scope);
   context.log('🚀 ~ file: index.js ~ line 13 ~ httpTrigger ~ token', token);
