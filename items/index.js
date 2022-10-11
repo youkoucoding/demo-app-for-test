@@ -11,7 +11,6 @@ export default async function httpTrigger(context, req) {
 
   // const credential = new ManagedIdentityCredential(clientId);
   const credential = new DefaultAzureCredential();
-  context.log('🚀 ~ file: index.js ~ line 8 ~ credential', credential);
   const { token } = await credential.getToken(scope);
   context.log('🚀 ~ file: index.js ~ line 13 ~ httpTrigger ~ token', token);
 
@@ -21,7 +20,6 @@ export default async function httpTrigger(context, req) {
     });
 
     const body = await response.text();
-    context.log('🚀 ~ file: index.js ~ line 25 ~ httpTrigger ~ body', body);
     context.res = {
       // status: response.status /* Defaults to 200 */,
       body: body,
