@@ -6,3 +6,4 @@ test
 tsconfig.json
 node_modules/azure-functions-core-tools
 node_modules/typescript
+node-cosmos/
