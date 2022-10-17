@@ -9,21 +9,28 @@ const connectionString = ''.concat(
 );
 
 const credential = new ManagedIdentityCredential(clientID);
-const aadClient = new CosmosClient({
+const client = new CosmosClient({
   endpoint: dbEndpoint,
   aadCredentials: credential,
 });
 
 export default async function httpTrigger(context, req) {
   try {
-    const res = aadClient.database('<your db name>').container('<container name>').items.readAll();
+    // const { database } = await client.databases.createIfNotExists({ id: '<your db name>' });
+    const database = await client.databases.readAll();
+    context.log('🚀 ~ file: index.js ~ line 21 ~ httpTrigger ~ database', database);
+    // await database.containers.createIfNotExists({ id: 'Customers' });
+    // const iterator = database.containers.readAll();
+    // const { resources: containersList } = await iterator.fetchAll();
+
     context.res = {
-      // status: response.status /* Defaults to 200 */,
-      body: [res, 'hello ok'],
+      status: 200 /* Defaults to 200 */,
+      body: ['hello ok', database],
     };
   } catch (error) {
     context.res = {
-      body: [error, 'hello error'],
+      status: 400,
+      body: ['hello error', error],
     };
   }
 }
