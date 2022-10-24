@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import './App.css';
+import Button from '@cloudscape-design/components/button';
+import ButtonDropdown from '@cloudscape-design/components/button-dropdown';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
@@ -40,6 +42,22 @@ function App() {
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
         <p>message from api: {message}</p>
+        <Button>Hello CloudScape!</Button>
+        <ButtonDropdown
+          items={[
+            { text: 'Delete', id: 'rm', disabled: false },
+            { text: 'Move', id: 'mv', disabled: false },
+            { text: 'Rename', id: 'rn', disabled: true },
+            {
+              text: 'View metrics',
+              href: 'https://example.com',
+              external: true,
+              externalIconAriaLabel: '(opens in new tab)',
+            },
+          ]}
+        >
+          Test Short
+        </ButtonDropdown>
       </div>
       <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
     </div>
