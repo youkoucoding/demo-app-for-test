@@ -4,6 +4,7 @@ import './App.css';
 import Button from '@cloudscape-design/components/button';
 import ButtonDropdown from '@cloudscape-design/components/button-dropdown';
 import DateRangePicker from '@cloudscape-design/components/date-range-picker';
+import Multiselect from '@cloudscape-design/components/multiselect';
 
 const apiUrl = import.meta.env.VITE_API_URL;
 const accessToken = import.meta.env.VITE_ACCESS_TOKEN;
@@ -12,6 +13,13 @@ function App() {
   const [count, setCount] = useState(0);
   const [message, setMessage] = useState('');
   const [value, setValue] = useState(null);
+  const [selectedOptions, setSelectedOptions] = useState([
+    {
+      label: 'Option 1',
+      value: '1',
+      description: 'This is a description',
+    },
+  ]);
   useEffect(() => {
     const fetchUrl = async () => {
       const res = await fetch(`${apiUrl}/helloworld`, {
@@ -117,6 +125,39 @@ function App() {
           applyButtonLabel: 'Apply',
         }}
         placeholder='Filter by a date and time range'
+      />
+      <Multiselect
+        selectedOptions={selectedOptions}
+        onChange={({ detail }) => setSelectedOptions(detail.selectedOptions)}
+        deselectAriaLabel={(e) => `Remove ${e.label}`}
+        options={[
+          {
+            label: 'Option 1',
+            value: '1',
+            description: 'This is a description',
+          },
+          {
+            label: 'Option 2',
+            value: '2',
+            iconName: 'unlocked',
+            labelTag: 'This is a label tag',
+          },
+          {
+            label: 'Option 3 (disabled)',
+            value: '3',
+            iconName: 'share',
+            tags: ['Tags go here', 'Tag1', 'Tag2'],
+            disabled: true,
+          },
+          {
+            label: 'Option 4',
+            value: '4',
+            filteringTags: ['filtering', 'tags', 'these are filtering tags'],
+          },
+          { label: 'Option 5', value: '5' },
+        ]}
+        placeholder='Choose options'
+        selectedAriaLabel='Selected'
       />
       <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
     </div>
